@@ -63,7 +63,6 @@ class DiningExperienceManager:
 
             meal_idx = input("Enter the number of the meal you want to order (or 'q' to quit): ")
             if meal_idx.lower() == 'q':
-                print("Order canceled.")
                 break
 
             try:
@@ -105,7 +104,7 @@ class DiningExperienceManager:
             return total_cost
         else:
             print("Order canceled.")
-            return total_cost
+            return -1
 
 
 if __name__ == "__main__":
@@ -113,3 +112,4 @@ if __name__ == "__main__":
     total_cost = manager.start_dining_experience()
     if total_cost != -1:
         print(f"Total Cost of Dining Experience: ${total_cost}")
+
