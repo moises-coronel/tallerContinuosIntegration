@@ -32,26 +32,33 @@ class DiningExperienceManager:
 
     def calculate_total_cost(self, selections):
         total_cost = 0
+        for meal_id, quantity in selections.items():
+            if 0 <= meal_id < len(self.menu) and quantity > 0:
+                meal = self.menu[meal_id]
+                total_cost += meal.price * quantity  # Arreglamos el cálculo aquí, eliminamos "meal.calculate_cost(quantity)"
+
+        total_discount = self.calculate_discount(selections)
+        total_cost -= total_discount
+
+        if self.check_special_meal_in_selections(selections):
+            total_cost += total_cost * 0.05
+
+        return total_cost
+    
+    def calculate_discount(self, selections):
         total_quantity = sum(selections.values())
+        if total_quantity > 10:  # Cambiamos el valor a 10, ya que el descuento del 20% se aplica a partir de 10 unidades
+            return 0.2 * total_quantity * 8
+        elif total_quantity > 5:  # Cambiamos el valor a 5, ya que el descuento del 10% se aplica a partir de 5 unidades
+            return 0.1 * total_quantity * 8
+        return 0
 
-        for idx, meal in enumerate(self.menu):
-            quantity = selections.get(idx, 0)
-            total_cost += meal.price * quantity
-
-            if meal.is_special:
-                total_cost -= meal.price * 0.05 * quantity
-
-        if total_quantity > 5:
-            total_cost *= 0.9
-        if total_quantity > 10:
-            total_cost *= 0.8
-
-        if total_cost > 100:
-            total_cost -= 25
-        elif total_cost > 50:
-            total_cost -= 10
-
-        return int(total_cost)
+    def check_special_meal_in_selections(self, selections):
+        for meal_id, quantity in selections.items():
+            if 0 <= meal_id < len(self.menu) and quantity > 0:
+                if self.menu[meal_id].is_special:
+                    return True
+        return False
 
     def start_dining_experience(self):
         print("Welcome to the Dining Experience Manager!")
@@ -112,4 +119,3 @@ if __name__ == "__main__":
     total_cost = manager.start_dining_experience()
     if total_cost != -1:
         print(f"Total Cost of Dining Experience: ${total_cost}")
-
