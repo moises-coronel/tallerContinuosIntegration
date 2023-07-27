@@ -78,8 +78,10 @@ class DiningExperienceManager:
                     raise ValueError("Invalid meal number. Please select a valid meal from the menu.")
             except ValueError as e:
                 print(e)
+                print()  # Agregar una línea adicional para mostrar un espacio en blanco
                 continue
 
+    
             quantity = input("Enter the quantity for this meal: ")
             quantity = self.validate_quantity(quantity)
             if quantity is None:
